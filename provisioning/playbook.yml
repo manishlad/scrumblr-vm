@@ -1,0 +1,60 @@
+---
+- hosts: all
+  pre_tasks:
+    - name: Update the apt cache
+      apt: update_cache=yes
+      sudo: yes
+
+  tasks:
+    - name: Install redis-server
+      apt: pkg=redis-server state=latest
+      sudo: yes
+
+    - name: Install build-essential
+      apt: pkg=build-essential state=latest
+      sudo: yes
+
+    - name: Install curl
+      apt: pkg=curl state=latest
+      sudo: yes
+
+    - name: Install libssl-dev
+      apt: pkg=libssl-dev state=latest
+      sudo: yes
+
+    - name: Install apache2-utils
+      apt: pkg=apache2-utils state=latest
+      sudo: yes
+
+    - name: Install git-core
+      apt: pkg=git-core state=latest
+      sudo: yes
+
+    - name: Clone node.js
+      git: repo=git://github.com/ry/node.git dest=/vagrant/node update=yes
+
+    - name: Configure node.js
+      command: ./configure chdir=/vagrant/node
+
+    - name: Make node.js
+      command: make chdir=/vagrant/node
+
+    - name: Install node.js
+      command: make install chdir=/vagrant/node
+      sudo: yes
+
+    - name: npm install forever
+      command: sudo npm install -g forever chdir=/vagrant/scrumblr
+      sudo: yes
+
+    - name: Clone Scrumblr
+      git: repo=git://github.com/aliasaria/scrumblr.git dest=/vagrant/scrumblr update=yes
+
+    - name: npm install scrumblr
+      command: npm install chdir=/vagrant/scrumblr
+
+    - name: Start up Scrumblr
+      command: sudo forever -m5 start server.js 80 & chdir=/vagrant/scrumblr
+      sudo: yes
+
+
