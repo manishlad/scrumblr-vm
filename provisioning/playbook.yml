@@ -43,15 +43,15 @@
       command: make install chdir=/vagrant/node
       sudo: yes
 
-    - name: npm install forever
-      command: sudo npm install -g forever chdir=/vagrant/scrumblr
-      sudo: yes
-
     - name: Clone Scrumblr
       git: repo=git://github.com/aliasaria/scrumblr.git dest=/vagrant/scrumblr update=yes
 
     - name: npm install scrumblr
       command: npm install chdir=/vagrant/scrumblr
+
+    - name: npm install forever
+      command: sudo npm install -g forever chdir=/vagrant/scrumblr
+      sudo: yes
 
     - name: Start up Scrumblr
       command: sudo forever -m5 start server.js 80 & chdir=/vagrant/scrumblr
