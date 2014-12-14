@@ -44,7 +44,7 @@
       sudo: yes
 
     - name: Clone Scrumblr
-      git: repo=git://github.com/manishlad/scrumblr.git dest=/vagrant/scrumblr update=yes
+      git: repo=git://github.com/manishlad/scrumblr.git dest=/vagrant/scrumblr version=custom update=yes
 
     - name: npm install scrumblr
       command: npm install chdir=/vagrant/scrumblr
